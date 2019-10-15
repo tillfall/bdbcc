@@ -27,7 +27,7 @@ class RealtimeValue:
         logging.debug(url)
         resp = urlopen(url).read().decode('gbk')
         # var hq_str_s_sh000001="上证指数,2991.0459,-16.8375,-0.56,1553769,16953193";\n
-        begin = resp.index('="')
+        begin = resp.index('="') + 2
         end = resp.index('";')
         # 上证指数,2991.0459,-16.8375,-0.56,1553769,16953193
         data = resp[begin:end]
@@ -39,7 +39,7 @@ class RealtimeValue:
     @classmethod
     def get_all(cls):
         all_data = [cls.get_one(id) for id in cls.index_ids.split(',')]
-        ret = '<table><th><td>id</td><td>指数名称</td><td>指数</td><td>涨幅</td><td>成交量</td></th>'
+        ret = '<table border="1"><th><td>id</td><td>指数名称</td><td>指数</td><td>涨幅</td><td>成交量</td></th>'
         for data in all_data:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
         ret += '</table>'
