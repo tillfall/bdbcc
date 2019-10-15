@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from flask import Flask
 from urllib.request import urlopen
 
@@ -18,8 +19,15 @@ app = Flask(__name__)
 ########################################
 
 class RealtimeValue:
-    url_template = 'http://hq.sinajs.cn/list=%s'
-    index_ids = 's_sh000001,s_sz399006,s_sz399905'
+    url_template = 'http://hq.sinajs.cn/list=s_%s'
+    index_ids = 'sh000001,sz399005,sz399906,sz399901'
+    chart_tmplate = \
+    '''
+    <tr><td>
+    <img src="http://image.sinajs.cn/newchart/daily/n/%s.gif"></img>
+    <img src="http://image.sinajs.cn/newchart/min/n/%s.gif"></img>
+    </td></tr>
+    '''
     
     @classmethod
     def get_one(cls, id):
@@ -35,14 +43,18 @@ class RealtimeValue:
         
         # id, 上证指数, 指数, 涨幅, 成交量
         return [id[-6:], secs[0], str(int(float(secs[1]))), secs[3], secs[5][:-4]]
-        
+                
     @classmethod
     def get_all(cls):
-        all_data = [cls.get_one(id) for id in cls.index_ids.split(',')]
+        ids = cls.index_ids.split(',')
+        all_data = [cls.get_one(id) for id in ids]
         ret = '<table border="1"><tr><th>id</th><th>指数名称</th><th>指数</th><th>涨幅</th><th>成交量</th></tr>'
         for data in all_data:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
         ret += '</table>'
+        
+        ret += '<table border="1">' + ''.join([cls.chart_tmplate%(id, id) for id in ids) + '</table>'
+        
         return ret
 
 @app.route("/")
