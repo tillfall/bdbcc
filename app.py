@@ -39,7 +39,7 @@ class RealtimeValue:
     @classmethod
     def get_all(cls):
         all_data = [cls.get_one(id) for id in cls.index_ids.split(',')]
-        ret = '<table border="1"><th><td>id</td><td>指数名称</td><td>指数</td><td>涨幅</td><td>成交量</td></th>'
+        ret = '<table border="1"><tr><th>id</th><th>指数名称</th><th>指数</th><th>涨幅</th><th>成交量</th></tr>'
         for data in all_data:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
         ret += '</table>'
