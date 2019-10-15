@@ -21,7 +21,7 @@ app = Flask(__name__)
 class RealtimeValue:
     url_template = 'http://hq.sinajs.cn/list=s_%s'
     # 上证50,000016,中证500,000905，沪深300,000300，上证综指999999，深证成指399001，中小板399005，创业板399006
-    index_ids = 'sh000001,sh0009005,sz399006,sz399001'
+    index_ids = 'sh000001,sh000905,sz399006,sz399001'
     chart_tmplate = \
     '''
     <tr><td>
