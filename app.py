@@ -53,7 +53,7 @@ class RealtimeValue:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
         ret += '</table>'
         
-        ret += '<table border="1">' + ''.join([cls.chart_tmplate%(id, id) for id in ids) + '</table>'
+        ret += '<table border="1">' + ''.join([cls.chart_tmplate%(id, id) for id in ids]) + '</table>'
         
         return ret
 
