@@ -31,18 +31,21 @@ class RealtimeValue:
     
     @classmethod
     def get_one(cls, id):
-        url = cls.url_template % id
-        logging.debug(url)
-        resp = urlopen(url).read().decode('gbk')
-        # var hq_str_s_sh000001="上证指数,2991.0459,-16.8375,-0.56,1553769,16953193";\n
-        begin = resp.index('="') + 2
-        end = resp.index('";')
-        # 上证指数,2991.0459,-16.8375,-0.56,1553769,16953193
-        data = resp[begin:end]
-        secs = data.split(',')
-        
-        # id, 上证指数, 指数, 涨幅, 成交量
-        return [id[-6:], secs[0], str(int(float(secs[1]))), secs[3], secs[5][:-4]]
+        try:
+            url = cls.url_template % id
+            logging.debug(url)
+            resp = urlopen(url).read().decode('gbk')
+            # var hq_str_s_sh000001="上证指数,2991.0459,-16.8375,-0.56,1553769,16953193";\n
+            begin = resp.index('="') + 2
+            end = resp.index('";')
+            # 上证指数,2991.0459,-16.8375,-0.56,1553769,16953193
+            data = resp[begin:end]
+            secs = data.split(',')
+            
+            # id, 上证指数, 指数, 涨幅, 成交量
+            return [id[-6:], secs[0], str(int(float(secs[1]))), secs[3], secs[5][:-4]]
+        except:
+            return [id[-6:]] + ['ERR']*4
                 
     @classmethod
     def get_all(cls):
