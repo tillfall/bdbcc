@@ -34,11 +34,11 @@ class RealtimeValue:
         secs = data.split(',')
         
         # id, 上证指数, 指数, 涨幅, 成交量
-        return [id[-6:], str(int(float(secs[0]))), secs[1], secs[3], secs[5][:-4]]
+        return [id[-6:], secs[0], str(int(float(secs[1]))), secs[3], secs[5][:-4]]
         
     @classmethod
     def get_all(cls):
-        all_data = [cls.get_one(id) for id in cls.index_ids]
+        all_data = [cls.get_one(id) for id in cls.index_ids.split(',')]
         ret = '<table><th><td>id</td><td>指数名称</td><td>指数</td><td>涨幅</td><td>成交量</td></th>'
         for data in all_data:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
