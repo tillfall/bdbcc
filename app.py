@@ -80,13 +80,14 @@ class HistoryValue:
     # <110023,600320;>190204,190504,190807
         secs = argstr.split(';')
         if len(secs) == 2:
-            self.funds = self.my_funds + secs[0].split(',')
+            self.funds = self.my_funds + [item.strip() for item in secs[0].split(',')]
             self.dates = secs[1].split(',')
         elif len(secs) == 1:
             self.funds = self.my_funds
             self.dates = secs[0].split(',')
         else:
             raise Exception(argstr)
+        self.dates = [item.strip() for item in self.dates]
             
         self.dates.sort()
         self.startdate = datetime.strptime(self.dates[0], self.inputdatefmt)
