@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
-from flask import Flask
-from urllib.request import urlopen
+from flask import Flask, request, render_template
+from urllib.request import urlopen, Request
+from datetime import datetime, timedelta
 
 import logging
 logging.basicConfig(level=logging.DEBUG,
@@ -61,9 +62,67 @@ class RealtimeValue:
         
         return ret
 
-@app.route("/")
+@app.route("/realtime")
 def realtime_value():
     return RealtimeValue.get_all()
+    
+#######################################
+
+class HistoryValue:
+    url_template = 'http://data.funds.hexun.com/outxml/detail/openfundnetvalue.aspx?fundcode=%s&startdate=%s&enddate=%s'
+    headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
+    
+    my_funds = '110022,110003,003318'.split(',')
+    inputdatefmt = '%y%m%d'
+    urldatefmt = '%Y-%m-%d'
+    
+    def parse_args(self, argstr):
+    # <110023,600320;>190204,190504,190807
+        secs = argstr.split(';')
+        if len(secs) == 2:
+            self.funds = self.my_funds + secs[0].split(',')
+            self.dates = secs[1].split(',')
+        elif len(secs) == 1:
+            self.funds = self.my_funds
+            self.dates = secs[0].split(',')
+        else:
+            raise Exception(argstr)
+            
+        self.dates.sort()
+        self.startdate = datetime.strptime(self.dates[0], self.inputdatefmt)
+        self.startdate = self.startdate - timedelta(days=10)  # 10天前，以免遇到节假日
+        self.startdate = datetime.strftime(self.startdate, self.urldatefmt)
+        self.enddate = datetime.strftime(datetime.now(), self.urldatefmt)  # 今天，并且加入查询列表
+        self.dates.append(datetime.strftime(datetime.now(), self.inputdatefmt)
+            
+    def get_one(self, fundid):
+        url = self.url_template%(fundid, self.startdate, self.enddate)
+        logging.debug(url)
+        req = Request(url=url, headers=self.headers) 
+        return urlopen(req).read().decode('utf-8')
+        
+    # TODO
+    def get_all(self, argstr):
+        self.parse_args(argstr)
+        return self.get_one('110022')
+        
+    
+@app.route('/history', methods=['GET'])
+def history_value():
+    inputText = request.args.get("input_text", default='')
+    if '' == inputText:
+        resText = ''
+    else:
+        resText = HistoryValue().get_all(inputText)
+    return render_template('query.html', query_url='/history', input_text=inputText, res_text=resText)
+
+##########################################
+
+@app.route('/')
+def index():
+    return '<table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
+        {'/realtime':'指数实时', '/history':'基金历史'}\
+        .items()]) + '</td></tr></table>'
 
 #########################################
 

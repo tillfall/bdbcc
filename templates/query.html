@@ -1,0 +1,18 @@
+<html>
+<form method="get" action="{{query_url}}">
+    <table>
+        <td>
+            <textarea type="text" class="query" name="input_text" id="input_text" value="" onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }">{{input_text}}</textarea>
+        <input type="submit" for="input_text" value="submit">
+        </td>
+    </table>
+    <hr>
+    
+    {{res_text}}
+            
+    <script>
+    var textarea = document.getElementById('res_text');
+    textarea.scrollTop = textarea.scrollHeight;
+    </script>
+</form>
+</html>
