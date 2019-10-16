@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
 from datetime import datetime, timedelta
 
@@ -71,6 +71,10 @@ def realtime_value():
 class HistoryValue:
     url_template = 'http://data.funds.hexun.com/outxml/detail/openfundnetvalue.aspx?fundcode=%s&startdate=%s&enddate=%s'
     headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
+    his_tag = '<fld_unitnetvalue>'
+    his_tag_len = len(his_tag)
+    
+    url_template_2 = 'http://hq.sinajs.cn/list=f_%s'
     
     my_funds = '110022,110003,003318'.split(',')
     inputdatefmt = '%y%m%d'
@@ -93,20 +97,87 @@ class HistoryValue:
         self.startdate = datetime.strptime(self.dates[0], self.inputdatefmt)
         self.startdate = self.startdate - timedelta(days=10)  # 10天前，以免遇到节假日
         self.startdate = datetime.strftime(self.startdate, self.urldatefmt)
-        self.enddate = datetime.strftime(datetime.now(), self.urldatefmt)  # 今天，并且加入查询列表
-        self.dates.append(datetime.strftime(datetime.now(), self.inputdatefmt))
-
+        # self.enddate = datetime.strftime(datetime.now(), self.urldatefmt)  # 今天，并且加入查询列表
+        # 为空，自动查询到最新数据（缺一天）
+        # self.dates.append(datetime.strftime(datetime.now(), self.inputdatefmt))
+        # 还是用sinajs来查最新的数据
+        self.enddate = datetime.strptime(self.dates[-1], self.inputdatefmt)
+        self.enddate = datetime.strftime(self.enddate, self.urldatefmt)
+        
+    @classmethod
+    def get_one_date(cls, str, date):
+        query_date = datetime.strptime(date, cls.inputdatefmt)
+        for i in range(10):
+            begin = str.find(datetime.strftime(query_date, cls.urldatefmt))
+            if -1 == begin:
+                query_date = query_date - timedelta(days=1)
+                continue
+            begin = str.find(cls.his_tag, begin) + cls.his_tag_len
+            end = str.find('</', begin)
+            return datetime.strftime(query_date, cls.inputdatefmt), str[begin:end]
+            
+    def get_all_date(self, str):
+        ret = {}
+        for date in self.dates:
+            d, v = self.get_one_date(str, date)
+            ret[d] = v
+        return ret
+        
+    @classmethod
+    def get_last_and_name(cls, fundid):
+        url = cls.url_template_2 % fundid
+        logging.debug(url)
+        resp = urlopen(url).read().decode('gbk')
+        # var hq_str_f_150065="长盛同瑞B,0.777,1.887,0.781,2019-10-16,0.0183126";
+        begin = resp.find('="')+2
+        end = resp.find(',',begin)
+        name = resp[begin:end]
+        
+        secs = resp.split(',')
+        val = secs[1]
+        date = secs[4]
+        return name, date, val
+        
     def get_one(self, fundid):
         url = self.url_template%(fundid, self.startdate, self.enddate)
         logging.debug(url)
         req = Request(url=url, headers=self.headers) 
-        return urlopen(req).read().decode('utf-8')
+        resp = urlopen(req).read().decode('utf-8')
+        return resp
         
-    # TODO
+    def get_all_with_today(self, fundid):
+        resp = self.get_one(fundid)
+        infos = self.get_all_date(resp)
+        # {'190621': '2.7040', '190708': '2.8450', '190930': '2.8860'
+        
+        name, newdate, newval = self.get_last_and_name(fundid)
+        newdate = newdate[2:4]+newdate[5:7]+newdate[8:10]
+        infos[newdate] = newval
+        # 易方达消费行业股票 {'190621': '2.7040', '190708': '2.8450', '190930': '2.8860', '191016': '2.938'}
+        
+        keys = sorted(infos.keys())
+        valdict = {}
+        valdict[keys[0]] = infos[keys[0]]
+        preval = float(infos[keys[0]])
+        for k in keys[1:]:
+            v = float(infos[k])
+            diff = (v-preval)/preval*100
+            valdict[k] = '%.2f'%diff
+        # 易方达消费行业股票 {'190621': '2.7040', '190708': '5.21', '190930': '6.73', '191016': '8.65'}
+        
+        return name, valdict
+
     def get_all(self, argstr):
         self.parse_args(argstr)
-        return self.get_one('110022')
         
+        ret = []
+        for fid in self.funds:
+            name, values = self.get_all_with_today(fid)
+            ret.append(name + str(values))
+        
+        # TODO
+        # dict.get(key)
+        return Markup('<hr/>'.join(ret)) # 取消渲染时转义
     
 @app.route('/history', methods=['GET'])
 def history_value():
