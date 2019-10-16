@@ -93,7 +93,7 @@ class HistoryValue:
         self.startdate = self.startdate - timedelta(days=10)  # 10天前，以免遇到节假日
         self.startdate = datetime.strftime(self.startdate, self.urldatefmt)
         self.enddate = datetime.strftime(datetime.now(), self.urldatefmt)  # 今天，并且加入查询列表
-        self.dates.append(datetime.strftime(datetime.now(), self.inputdatefmt)
+        self.dates.append(datetime.strftime(datetime.now(), self.inputdatefmt))
 
     def get_one(self, fundid):
         url = self.url_template%(fundid, self.startdate, self.enddate)
