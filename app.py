@@ -115,7 +115,8 @@ def history_value():
         resText = ''
     else:
         resText = HistoryValue().get_all(inputText)
-    return render_template('query.html', query_url='/history', input_text=inputText, res_text=resText)
+    return render_template('query.html', query_url='/history', input_text=inputText, res_text=resText, 
+        hint='<110022,110003;>190602,190823')
 
 ##########################################
 
