@@ -53,7 +53,7 @@ class RealtimeValue:
     def get_all(cls):
         ids = cls.index_ids.split(',')
         all_data = [cls.get_one(id) for id in ids]
-        ret = '<a href="/index">BACK</a><table border="1"><tr><th>id</th><th>指数名称</th><th>指数</th><th>涨幅</th><th>成交量</th></tr>'
+        ret = '<a href="/fund">BACK</a><table border="1"><tr><th>id</th><th>指数名称</th><th>指数</th><th>涨幅</th><th>成交量</th></tr>'
         for data in all_data:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
         ret += '</table>'
@@ -191,7 +191,7 @@ def history_value():
 
 ##########################################
 
-@app.route('/index')
+@app.route('/fund')
 def index():
     return '<table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
         {'/realtime':'指数实时', '/history':'基金历史'}\
