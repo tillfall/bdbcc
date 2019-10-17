@@ -2,6 +2,7 @@
 <form method="get" action="{{query_url}}">
     <table>
         <td>
+        <a href="/index">BACK</a>
             <textarea type="text" class="query" name="input_text" id="input_text" value="" onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }" placeholder="{{hint}}">{{input_text}}</textarea>
         <input type="submit" for="input_text" value="submit">
         </td>
