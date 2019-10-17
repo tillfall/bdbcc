@@ -53,7 +53,7 @@ class RealtimeValue:
     def get_all(cls):
         ids = cls.index_ids.split(',')
         all_data = [cls.get_one(id) for id in ids]
-        ret = '<a href="/fund">BACK</a><table border="1"><tr><th>id</th><th>指数名称</th><th>指数</th><th>涨幅</th><th>成交量</th></tr>'
+        ret = '<style>td {font-size: 20vw;}</style><a href="/fund">BACK</a><table border="1"><tr><td>id</td><td>指数名称</td><td>指数</td><td>涨幅</td><td>成交量</td></tr>'
         for data in all_data:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
         ret += '</table>'
@@ -108,10 +108,12 @@ class HistoryValue:
     def get_one_date(cls, str, date):
         query_date = datetime.strptime(date, cls.inputdatefmt)
         for i in range(10):
+            logging.info(query_date)
             begin = str.find(datetime.strftime(query_date, cls.urldatefmt))
             if -1 == begin:
                 query_date = query_date - timedelta(days=1)
                 continue
+            logging.info(query_date)
             begin = str.find(cls.his_tag, begin) + cls.his_tag_len
             end = str.find('</', begin)
             return datetime.strftime(query_date, cls.inputdatefmt), str[begin:end]
@@ -193,7 +195,7 @@ def history_value():
 
 @app.route('/fund')
 def index():
-    return '<table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
+    return '<style>td {font-size: 20vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
         {'/realtime':'指数实时', '/history':'基金历史'}\
         .items()]) + '</td></tr></table>'
 
