@@ -108,12 +108,10 @@ class HistoryValue:
     def get_one_date(cls, str, date):
         query_date = datetime.strptime(date, cls.inputdatefmt)
         for i in range(10):
-            logging.info(query_date)
             begin = str.find(datetime.strftime(query_date, cls.urldatefmt))
             if -1 == begin:
                 query_date = query_date - timedelta(days=1)
                 continue
-            logging.info(query_date)
             begin = str.find(cls.his_tag, begin) + cls.his_tag_len
             end = str.find('</', begin)
             return datetime.strftime(query_date, cls.inputdatefmt), str[begin:end]
@@ -139,6 +137,7 @@ class HistoryValue:
         val = secs[1]
         date = secs[4]
         return name, date, val
+        # TODO 获取昨天的数据。hexun没有
         
     def get_one(self, fundid):
         url = self.url_template%(fundid, self.startdate, self.enddate)
@@ -172,14 +171,30 @@ class HistoryValue:
     def get_all(self, argstr):
         self.parse_args(argstr)
         
-        ret = []
+        dates = []
+        infos = []
         for fid in self.funds:
             name, values = self.get_all_with_today(fid)
-            ret.append(name + str(values))
+            infos.append([name, fid, values])
+            dates.extend(values.keys())
+            
+        dates = sorted(set(dates))
+        ret = '<tr><td>name</td><td>id</td><td>' + '</td><td>'.join(dates) + '</td></tr>'
         
-        # TODO
+        for info in infos:
+            infostr = '<tr><td>'+info[0]+'</td><td>'+info[1]+'</td>'
+            for d in dates:
+                infostr += '<td>'
+                v = info[2].get(d)                
+                infostr += v if v else ''
+                infostr += '</td>'
+            infostr += '</tr>'
+            ret += infostr
+            
+        ret = '<table border="1">' + ret + '</table>'
+        
         # dict.get(key)
-        return Markup('<hr/>'.join(ret)) # 取消渲染时转义
+        return Markup(ret) # 取消渲染时转义
     
 @app.route('/history', methods=['GET'])
 def history_value():
