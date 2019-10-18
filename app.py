@@ -297,6 +297,14 @@ def notify():
     with open('notify', 'w') as f:
         f.write(str(datetime.now()))
     return 'ok'
+# curl 106.13.188.142:6789/notify
+# service cron restart
+# http://c.biancheng.net/view/1092.html
+
+@app.route('/getnotify')
+def getnotify():
+    with open('notify', 'r') as f:
+        return f.readline()
 
 ##########################################
 
@@ -309,7 +317,7 @@ def index():
 @app.route('/')
 def home():
     return '<style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
-        {'/fund':'基金', '/url':'网址', '/map':'地图'}\
+        {'/fund':'基金', '/url':'网址', '/map':'地图', '/getnotify':'检查同步时间'}\
         .items()]) + '</td></tr></table>'
 
 #########################################
