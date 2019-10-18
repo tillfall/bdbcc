@@ -23,9 +23,7 @@ class RealtimeValue:
     url_template = 'http://hq.sinajs.cn/list=s_%s'
     # 上证50,000016,中证500,000905，沪深300,000300，上证综指999999，深证成指399001，中小板399005，创业板399006
     index_ids = 'sh000001,sh000905,sz399006,sz399001'
-    chart_tmplate = \
-    '''
-    <tr><td>
+    chart_tmplate = '''<tr><td>
     <img src="http://image.sinajs.cn/newchart/daily/n/%s.gif"></img>
     <img src="http://image.sinajs.cn/newchart/min/n/%s.gif"></img>
     </td></tr>
@@ -292,6 +290,14 @@ def myurl():
 def map():
     return render_template('map.html')
 
+#########################################
+
+@app.route('/notify')
+def notify():
+    with open('notify', 'w') as f:
+        f.write(str(datetime.now()))
+    return 'ok'
+
 ##########################################
 
 @app.route('/fund')
@@ -303,7 +309,7 @@ def index():
 @app.route('/')
 def home():
     return '<style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
-        {'/fund':'基金', '/url':'网址'}\
+        {'/fund':'基金', '/url':'网址', '/map':'地图'}\
         .items()]) + '</td></tr></table>'
 
 #########################################
