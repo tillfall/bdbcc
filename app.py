@@ -293,6 +293,12 @@ def index():
     return '<style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
         {'/realtime':'指数实时', '/history':'基金历史'}\
         .items()]) + '</td></tr></table>'
+        
+@app.route('/')
+def home():
+    return '<style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
+        {'/fund':'基金', '/url':'网址'}\
+        .items()]) + '</td></tr></table>'
 
 #########################################
 
