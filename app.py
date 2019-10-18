@@ -285,6 +285,12 @@ def myurl():
     return '<title>URL</title><style>td {font-size: 4vw;}</style><table>' + \
         ''.join('<tr><td><a href="%s">%s</a></td><td>%s</td><td>%s</td></tr>'%(i[1],i[0],i[2],i[3]) for i in us) \
         + '</table>'''
+        
+#########################################
+
+@app.route('/map')
+def map():
+    return render_template('map.html')
 
 ##########################################
 

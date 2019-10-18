@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MYMAP</title>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+        <style type='text/css'>body{margin:0;padding:0;overflow:hidden;font-family:'Segoe UI',Helvetica,Arial,Sans-Serif}</style>
+    </head>
+    <body>
+        <div id='printoutPanel'></div>
+        
+        <div id='myMap' style='width: 100vw; height: 100vh;'></div>
+        <script type='text/javascript'>
+			function addPushpin(map, x, y, atext, atitle, asubtitle) {
+				var pushpin= new Microsoft.Maps.Pushpin(
+						new Microsoft.Maps.Location(x, y), //	map.getCenter(), 
+						{ text: atext, title: atitle, subTitle: asubtitle, color:'orange'}); 
+				map.entities.push(pushpin);
+				pushpin.setOptions({ enableHoverStyle: true, enableClickedStyle: true,color:'red'  });
+			}
+			
+            function loadMapScenario() {
+				// var boundingBox = Microsoft.Maps.LocationRect.fromLocations(new Microsoft.Maps.Location(47.618594, -122.347618), new Microsoft.Maps.Location(47.620700, -122.347584), new Microsoft.Maps.Location(47.622052, -122.345869)); 
+                var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+				// credentials: 'AuZLq8HldSf5SSAejGTpuD2WXwu90DrdU2CiQeNu8TG8e9VFZn65cGtEwdFaqU7Q',
+				// navigationBarMode: navigationBarMode.compact,
+				mapTypeId: Microsoft.Maps.MapTypeId.canvasLight,
+				center: new Microsoft.Maps.Location(30.5989112854004, 119.862159729),});
+                // Add 5 random Polylines within current map view
+                // map.entities.push(Microsoft.Maps.TestDataGenerator.getPolylines(5, map.getBounds()));  
+
+				map.entities.clear(); 
+				/*
+				var pushpin= new Microsoft.Maps.Pushpin(
+						new Microsoft.Maps.Location(51.50632, -0.32020), //	map.getCenter(), 
+						{ text: 'A', title: '标题', subTitle: '子标题' }); 
+				map.entities.push(pushpin);
+				pushpin.setOptions({ enableHoverStyle: true, enableClickedStyle: true });
+				*/
+				
+				
+addPushpin(map, 22.194187164, 113.546714782, '大三巴牌坊', '港珠澳', '1701');
+addPushpin(map, 22.1012306213379, 113.538917541504, '珠海长隆', '港珠澳', '1701');
+addPushpin(map, 22.2455501556396, 114.179649353, '香港海洋公园', '港珠澳', '1701');
+addPushpin(map, 43.8752098083496, 87.567237854, '乌鲁木齐', '新疆', '1707');
+addPushpin(map, 46.0894393920898, 85.6961135864258, '世界魔鬼城', '新疆', '1707');
+addPushpin(map, 48.6917037963867, 87.0340881347656, '喀纳斯', '新疆', '1707');
+addPushpin(map, 48.4759101867676, 86.701286315918, '白哈巴村', '新疆', '1707');
+addPushpin(map, 48.5763244628906, 87.4378662109375, '禾木', '新疆', '1707');
+addPushpin(map, 47.826422, 86.706098, '五彩滩', '新疆', '1707');
+addPushpin(map, 47.1812858581543, 89.7349395751953, '可可托海', '新疆', '1707');
+addPushpin(map, 43.9472999572754, 88.1003723144531, '天山天池', '新疆', '1707');
+addPushpin(map, 34.3836517333984, 109.281188964844, '兵马俑', '陕西', '1707');
+addPushpin(map, 31.3125991821289, 120.698402404785, '金鸡湖', '江苏', '1108');
+addPushpin(map, 28.1769599914551, 112.939636230469, '岳麓山', '湖南', '1111');
+
+addPushpin(map, 24.439847946167, 118.097610473633, '厦门', '福建', '1204');
+addPushpin(map, 27.9517784118652, 109.60262298584, '凤凰古城', '湖南', '1308');
+
+addPushpin(map, 31.180847168, 119.71639251709, '宜兴竹海', '江苏', '1206');
+addPushpin(map, 36.0605697631836, 120.399032592773, '青岛', '山东', '1210');
+addPushpin(map, 39.8041610717773, 98.2257080078125, '嘉峪关', '甘肃', '1707');
+addPushpin(map, 45.7788391113281, 126.557540893555, '哈尔滨冰雪大世界', '黑龙江', '1802');
+addPushpin(map, 43.6846084594727, 126.625160217285, '松花湖', '吉林', '1802');
+addPushpin(map, 34.5623779296875, 117.734298706055, '台儿庄古城', '山东', '1807');
+
+addPushpin(map, 33.36281, 126.531183, '歌诗达邮轮', '韩国', '1306');
+addPushpin(map, 37.576589, 126.974977, '青瓦台', '韩国', '1306');
+addPushpin(map, 29.3274, 110.416, '张家界', '湖南', '1308');
+addPushpin(map, 38.6140518188477, 106.072288513184, '影视城', '宁夏', '1310');
+addPushpin(map, 37.4617347717285, 105.003433227539, '沙坡头', '宁夏', '1310');
+addPushpin(map, 38.8101081848145, 106.352806091309, '沙湖', '宁夏', '1310');
+addPushpin(map, 38.289793, 106.508497, '水洞沟', '宁夏', '1310');
+addPushpin(map, 31.1812992095947, 120.906318664551, '淀山湖&锦溪', '江苏', '1402');
+addPushpin(map, 33.03076, 119.816943, '兴化油菜花', '江苏', '1404');
+addPushpin(map, 30.591682434082, 119.660293579102, '安吉竹海', '浙江', '1405');
+addPushpin(map, 39.87808, 116.4132, '天坛', '北京', '1407');
+addPushpin(map, 4.57611, 118.9489, '马达京', '马来', '1409');
+addPushpin(map, 34.1031494140625, 107.891548156738, '太白山', '陕西', '1410');
+addPushpin(map, 34.723054, 106.576139, '关山牧场', '陕西', '1410');
+addPushpin(map, 31.8226299285889, 120.000717163086, '常州恐龙园', '江苏', '1410');
+
+addPushpin(map, 18.767, 99.02616, '清迈', '泰国', '1412');
+addPushpin(map, 30.2367401123047, 120.133567810059, '杭州', '浙江', '1412');
+addPushpin(map, 16.068021774292, 108.061416626, '岘港', '越南', '1503');
+addPushpin(map, 24.9170207977295, 110.528007507324, '桂林漓江', '广西', '1504');
+addPushpin(map, 36.44654, 115.9736, '聊城', '山东', '1504');
+
+addPushpin(map, 29.8, 119.833, '桐庐', '浙江', '1505');
+
+addPushpin(map, 29.8611507415771, 122.397956848145, '舟山', '浙江', '1507');
+addPushpin(map, 34.4269599914551, 107.90389251709, '法门寺', '陕西', '1508');
+addPushpin(map, 27.4713096618652, 119.996681213379, '泰顺', '浙江', '1510');
+addPushpin(map, 30.5989112854004, 119.862159729, '莫干山', '浙江', '1510');
+addPushpin(map, 18.3824996948242, 109.759437561, '三亚', '海南', '1510');
+
+addPushpin(map, 38.9486274719238, 121.430671691895, '大连滑雪', '辽宁', '1601');
+addPushpin(map, 29.8057613372803, 118.03881073, '齐云山九龙瀑', '安徽', '1602');
+
+addPushpin(map, 7.877132, 98.38456, '普吉岛', '泰国', '1603');
+
+addPushpin(map, 36.1162490844727, 110.458847045898, '壶口瀑布', '陕西', '1607');
+addPushpin(map, 31.4150238037109, 120.071380615234, '拈花湾', '江苏', '1608');
+
+addPushpin(map, 29.238109588623, 117.865043640137, '婺源', '江西', '1610');
+
+addPushpin(map, 29.740190506, 120.98307800293, '绍兴覆卮山', '江苏', '1704');
+addPushpin(map, 40.13728, 94.66335, '敦煌', '甘肃', '1707');
+addPushpin(map, 27.1209392547607, 120.186592102051, '霞浦&楠溪江', '福建', '1710');
+addPushpin(map, 44.3332481384277, 128.05940246582, '雪乡', '吉林', '1802');
+addPushpin(map, 31.530638, 120.237341, '绿羊温泉&蠡堤', '江苏', '1802');
+
+addPushpin(map, 34.968436, 135.772401, '京都', '日本', '1806');
+addPushpin(map, 34.666469, 135.431784, '大阪', '日本', '1806');
+addPushpin(map, 35.5924186706543, 116.988388061523, '曲阜祭孔', '山东', '1807');
+
+addPushpin(map, 12.2119817733765, 109.243438720703, '芽庄', '越南', '1902');
+				
+				
+				Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+					//Create an instance of the directions manager.
+					directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+
+				/*
+					//Create waypoints to route between.
+					var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'Seattle, WA', location: new Microsoft.Maps.Location(51.50632, -0.32020) });
+					directionsManager.addWaypoint(seattleWaypoint);
+
+					var workWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'Work', location: new Microsoft.Maps.Location(51.50632, -0.12714) });
+					directionsManager.addWaypoint(workWaypoint);
+
+					var homeWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'Home', location: new Microsoft.Maps.Location(51.50132, -0.12714) });
+					directionsManager.addWaypoint(homeWaypoint);
+
+					var outWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'Out', location: new Microsoft.Maps.Location(51.509883880615234, -0.15507930517196655) });
+					directionsManager.addWaypoint(outWaypoint);
+				*/
+				/*
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '太仆寺旗', location: new Microsoft.Maps.Location(41.8709182739258, 115.283432006836) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '塞罕坝,金莲映日,七星湖湿地,御道口', location: new Microsoft.Maps.Location(42.4069595336914, 117.247009277344) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '乌兰布统', location: new Microsoft.Maps.Location(42.570854187, 117.229530334473) }));
+
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '克旗青山国家地质公园', location: new Microsoft.Maps.Location(43.220994, 117.859875) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '黄岗梁森林公园', location: new Microsoft.Maps.Location(43.586228, 117.525011) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '达里诺尔湖', location: new Microsoft.Maps.Location(43.3932991027832, 116.669731140137) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '锡林浩特平顶山火山地质公园', location: new Microsoft.Maps.Location(43.653394, 116.120944) }));
+
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '乌兰五台', location: new Microsoft.Maps.Location(44.298772, 117.007918) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '西乌珠穆沁草原', location: new Microsoft.Maps.Location(44.390896, 117.967756) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '乌拉盖草原', location: new Microsoft.Maps.Location(45.887792, 119.483322) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '阿尔山', location: new Microsoft.Maps.Location(47.1726493835449, 119.948127746582) }));
+//directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '贝尔湖', location: new Microsoft.Maps.Location(47.9296112060547, 117.620719909668) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '海拉尔', location: new Microsoft.Maps.Location(49.196155, 119.714239) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '呼伦湖,贝尔湖', location: new Microsoft.Maps.Location(49.4286575317383, 117.678344726563) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '满洲里', location: new Microsoft.Maps.Location(49.57976, 117.4638) }));
+
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '额尔古纳', location: new Microsoft.Maps.Location(50.2455253601074, 120.158226013184) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '室韦', location: new Microsoft.Maps.Location(51.340547, 119.903658) }));
+*/
+					//Specify the element in which the itinerary will be rendered.
+					directionsManager.setRenderOptions({ itineraryContainer: '#directionsItinerary' });
+
+					//Calculate directions.
+					directionsManager.calculateDirections();
+				});
+
+				Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+					//Create an instance of the directions manager.
+					directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+/*
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '兰州', location: new Microsoft.Maps.Location(36.515, 103.62) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '拉卜楞寺', location: new Microsoft.Maps.Location(35.19556, 102.5081) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '桑科草原', location: new Microsoft.Maps.Location(35.1125259399414, 102.413757324219) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '尕海', location: new Microsoft.Maps.Location(34.2081756591797, 102.345504760742) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '则岔石林', location: new Microsoft.Maps.Location(34.3598594665527, 102.685401916504) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '阿万仓湿地', location: new Microsoft.Maps.Location(33.7684211730957, 101.684471130371) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '玛曲黄河第一湾', location: new Microsoft.Maps.Location(33.960406, 102.083693) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '年宝玉则', location: new Microsoft.Maps.Location(33.432938, 101.09675) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '红原大草原', location: new Microsoft.Maps.Location(32.7971115112305, 102.544502258301) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '花湖', location: new Microsoft.Maps.Location(33.5739212036133, 102.952972412109) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '措美峰', location: new Microsoft.Maps.Location(34.0562705993652, 103.211860656738) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '扎尕那', location: new Microsoft.Maps.Location(34.0555801391602, 103.213027954102) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '若尔盖', location: new Microsoft.Maps.Location(33.5729370117188, 102.95108795166) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '松潘', location: new Microsoft.Maps.Location(32.6400299072266, 103.595016479492) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '米亚罗', location: new Microsoft.Maps.Location(31.6598491668701, 102.802207946777) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '毕棚沟', location: new Microsoft.Maps.Location(31.6107597351074, 102.821830749512) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '汶川', location: new Microsoft.Maps.Location(31.0556526184082, 103.488441467285) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '四姑娘山', location: new Microsoft.Maps.Location(30.9942111968994, 102.833770752) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '都江堰', location: new Microsoft.Maps.Location(30.9968299865723, 103.613288879395) }));
+directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: '成都', location: new Microsoft.Maps.Location(30.6596393585205, 104.028457641602) }));
+*/
+					//Specify the element in which the itinerary will be rendered.
+					directionsManager.setRenderOptions({ itineraryContainer: '#directionsItinerary' });
+
+					//Calculate directions.
+					directionsManager.calculateDirections();
+				});
+
+            }
+			
+        </script>
+        <script type='text/javascript' src='https://cn.bing.com/api/maps/mapcontrol?key=AuZLq8HldSf5SSAejGTpuD2WXwu90DrdU2CiQeNu8TG8e9VFZn65cGtEwdFaqU7Q&callback=loadMapScenario' async defer></script>
+    </body>
+</html>
+
+<!--
+https://www.cnblogs.com/aiyunyun/p/6292567.html
+route:
+https://docs.microsoft.com/en-us/bingmaps/v8-web-control/map-control-concepts/directions-module-examples/calculate-driving-directions
+-->
