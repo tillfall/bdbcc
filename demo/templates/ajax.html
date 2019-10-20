@@ -1,0 +1,23 @@
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+
+Hello Ajax
+<hr/>
+
+<script type="text/javascript">
+    setInterval(
+        function(){
+            $.ajax({
+                type: "GET",
+                dataType: "text",
+                url: "/ajax",
+                success: function(result){
+                    $("#myVal").append('<br/>'+result);
+                }
+            })
+        }, 5000);
+</script>
+
+<div id="myVal"></div>
+
+<hr/>
+good bye Ajax
