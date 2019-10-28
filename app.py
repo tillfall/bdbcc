@@ -49,6 +49,15 @@ class RealtimeValue:
         except:
             return [id[-6:]] + ['ERR']*4
                 
+    fund_url_template = 'http://fundgz.1234567.com.cn/js/%s.js'
+    fund_index_ids = '110022,110003,003318'
+    @classmethod
+    def get_one_fund(cls, id):
+        url = cls.fund_url_template%id
+        req = urlopen(url).read().decode('utf-8')
+        reqjson = json.loads(req[8:-2])
+        return [reqjson['fundcode'], reqjson['name'], reqjson['gszzl'], reqjson['gztime'][5:]]
+
     @classmethod
     def get_all(cls):
         ids = cls.index_ids.split(',')
@@ -56,6 +65,11 @@ class RealtimeValue:
         ret = '<style>td {font-size: 4vw;}</style><a href="/fund">BACK</a><table border="1"><tr><td>id</td><td>指数名称</td><td>指数</td><td>涨幅</td><td>成交量</td></tr>'
         for data in all_data:
             ret += '<tr><td>' + '</td><td>'.join(data) + '</td></tr>'
+            
+        all_fund_data = [cls.get_one_fund(id) for id in cls.fund_index_ids.split(',')]
+        for afund_data in all_fund_data:
+            ret += '<tr><td>'+afund_data[0]+'</td><td>'+afund_data[1][:10]+'</td><td></td><td>'+afund_data[2]+'</td><td>'+afund_data[3]+'</td></tr>'
+        
         ret += '</table>'
         
         ret += '<table border="1">' + ''.join([cls.chart_tmplate%(id, id) for id in ids]) + '</table>'
