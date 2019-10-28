@@ -247,7 +247,7 @@ def myurl():
         ['春秋', 'https://www.ch.com/', '#travel#', '[135/5]'],
         ['携程', 'http://www.ctrip.com/', '#travel#', '[135/7861]'],
         ['同程', 'https://www.ly.com/', '#travel#', '[139/139]'],
-        ['亚航', 'https://www.airasia.com/zh/cn?cid=1', '#travel#', '[t/m.1]'],
+        ['亚航', 'https://www.airasia.com/zh/cn?cid=1', '#travel#', '[t/M.1]'],
         ['图虫', 'https://tuchong.com/', '#travel#', '[139]'],
         ['中国徒步网', 'http://www.chinawalking.net.cn/', '#travel#', ''],
         ['上海展会', 'http://shanghai.eshow365.com/', '#travel#', ''],
