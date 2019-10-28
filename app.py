@@ -342,7 +342,7 @@ def index():
 @app.route('/')
 def home():
     return '<title>HOME</title><style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
-        {'/fund':'基金', '/url':'网址', '/map':'地图', '/getnotify':'检查同步时间'}\
+        {'/fund':'基金', '/url':'网址', 'https://tillfall.github.io/map.html':'地图', '/getnotify':'检查同步时间'}\
         .items()]) + '</td></tr></table>'
 
 #########################################
