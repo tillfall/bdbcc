@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+__version__ = '20191030'
+
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
 from datetime import datetime, timedelta
