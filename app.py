@@ -361,6 +361,7 @@ class FlightCtrip:
         all_data = cls.getprice_all(fromdate, backdate)
         ret = '<table><tr><td></td><td>'+fromdate+'</td><td>'+backdate+'</td></tr>'
         for a_data in all_data:
+            a_data[0] = '<a href="/flights_city?input_text=%s">%s</a>'%(a_data[0],a_data[0])
             ret += '<tr><td>' + '</td><td>'.join(a_data) + '</td></tr>'
         ret += '</table>'
         return Markup(ret)
