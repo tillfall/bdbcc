@@ -333,6 +333,51 @@ def getnotify():
 
 ##########################################
 
+class FlightCtrip:
+    url_template = 'https://flights.ctrip.com/domestic/ajax/Get90DaysLowestPrice?dcity=%s&acity=%s'
+    city = {'北海': 'BHY', '北京': 'BJS', '重庆': 'CKG', '成都': 'CTU', '长沙': 'CSX', '承德': 'CDE', '大理': 'DLU', '大连': 'DLC', '敦煌': 'DNH', '恩施': 'ENH', '佛山': 'FUO', '福州': 'FOC', '广州': 'CAN', '贵阳': 'KWE', '桂林': 'KWL', '哈尔滨': 'HRB', '海口': 'HAK', '海拉尔': 'HLD', '呼和浩特': 'HET', '嘉峪关': 'JGN', '西双版纳': 'JHG', '井冈山': 'JGS', '景德镇': 'JDZ', '喀什': 'KHG', '昆明': 'KMG', '拉萨': 'LXA', '兰州': 'LHW', '丽江': 'LJG', '荔波': 'LLB', '六盘水': 'LPF', '柳州': 'LZH', '青岛': 'TAO', '日喀则': 'RKZ', '三亚': 'SYX', '厦门': 'XMN', '深圳': 'SZX', '神农架': 'HPG', '沈阳': 'SHE', '吐鲁番': 'TLQ', '温州': 'WNZ', '乌鲁木齐': 'URC', '武汉': 'WUH', '武夷山': 'WUS', '西安': 'SIA', '西宁': 'XNN', '银川': 'INC', '张家界': 'DYG', '张掖': 'YZY', '珠海': 'ZUH', }
+    sh_city = ['上海', 'SHA']
+    
+    @classmethod
+    def getprice(cls, dcitycode, acitycode, date):
+        try:
+            url = cls.url_template % (dcitycode, acitycode)
+            req = urlopen(url).read().decode('gbk')
+            return str(json.loads(req)['Prices'][date])
+        except:
+            return 'NA'
+            
+    @classmethod
+    def getprice_all(cls, fromdate, backdate):
+        ret = []
+        for k, v in cls.city.items():
+            fromprice = cls.getprice(cls.sh_city[1], v, fromdate)
+            backprice = cls.getprice(v, cls.sh_city[1], backdate)
+            ret.append([k, fromprice, backprice])
+        return ret
+            
+    @classmethod
+    def getpricetab(cls, fromdate, backdate):
+        all_data = cls.getprice_all(fromdate, backdate)
+        ret = '<table><tr><td></td><td>'+fromdate+'</td><td>'+backdate+'</td></tr>'
+        for a_data in all_data:
+            ret += '<tr><td>' + '</td><td>'.join(a_data) + '</td></tr>'
+        ret += '</table>'
+        return Markup(ret)
+        
+@app.route('/flights', methods=['GET'])
+def get_flights():
+    inputText = request.args.get("input_text", default='')
+    if '' == inputText:
+        resText = ''
+    else:
+        dates = inputText.split(',')
+        resText = FlightCtrip.getpricetab(dates[0].strip(),dates[1].strip())
+    return render_template('query.html', query_url='/flights', input_text=inputText, res_text=resText, 
+        hint='2020-01-03,2020-01-05')
+
+#######################################
+
 @app.route('/fund')
 def index():
     return '<title>FUND</title><style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
@@ -342,7 +387,7 @@ def index():
 @app.route('/')
 def home():
     return '<title>HOME</title><style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
-        {'/fund':'基金', '/url':'网址', 'https://tillfall.github.io/map.html':'地图', '/getnotify':'检查同步时间'}\
+        {'/fund':'基金', '/url':'网址', '/flights':'航班', 'https://tillfall.github.io/map.html':'地图', '/getnotify':'检查同步时间'}\
         .items()]) + '</td></tr></table>'
 
 #########################################
