@@ -335,7 +335,7 @@ def getnotify():
 
 class FlightCtrip:
     url_template = 'https://flights.ctrip.com/domestic/ajax/Get90DaysLowestPrice?dcity=%s&acity=%s'
-    city = {'北海': 'BHY', '北京': 'BJS', '重庆': 'CKG', '成都': 'CTU', '长沙': 'CSX', '承德': 'CDE', '大理': 'DLU', '大连': 'DLC', '敦煌': 'DNH', '恩施': 'ENH', '佛山': 'FUO', '福州': 'FOC', '广州': 'CAN', '贵阳': 'KWE', '桂林': 'KWL', '哈尔滨': 'HRB', '海口': 'HAK', '海拉尔': 'HLD', '呼和浩特': 'HET', '嘉峪关': 'JGN', '西双版纳': 'JHG', '井冈山': 'JGS', '景德镇': 'JDZ', '喀什': 'KHG', '昆明': 'KMG', '拉萨': 'LXA', '兰州': 'LHW', '丽江': 'LJG', '荔波': 'LLB', '六盘水': 'LPF', '柳州': 'LZH', '青岛': 'TAO', '日喀则': 'RKZ', '三亚': 'SYX', '厦门': 'XMN', '深圳': 'SZX', '神农架': 'HPG', '沈阳': 'SHE', '吐鲁番': 'TLQ', '温州': 'WNZ', '乌鲁木齐': 'URC', '武汉': 'WUH', '武夷山': 'WUS', '西安': 'SIA', '西宁': 'XNN', '银川': 'INC', '张家界': 'DYG', '张掖': 'YZY', '珠海': 'ZUH', }
+    city = {'北海':'BHY','北京':'BJS','长沙':'CSX','成都':'CTU','承德':'CDE','重庆':'CKG','大理':'DLU','大连':'DLC','敦煌':'DNH','恩施':'ENH','佛山':'FUO','福州':'FOC','广州':'CAN','贵阳':'KWE','桂林':'KWL','哈尔滨':'HRB','海口':'HAK','海拉尔':'HLD','呼和浩特':'HET','嘉峪关':'JGN','井冈山':'JGS','景德镇':'JDZ','喀什':'KHG','昆明':'KMG','拉萨':'LXA','兰州':'LHW','丽江':'LJG','荔波':'LLB','柳州':'LZH','六盘水':'LPF','青岛':'TAO','日喀则':'RKZ','三亚':'SYX','深圳':'SZX','神农架':'HPG','沈阳':'SHE','吐鲁番':'TLQ','温州':'WNZ','乌鲁木齐':'URC','武汉':'WUH','武夷山':'WUS','西安':'SIA','西宁':'XNN','西双版纳':'JHG','厦门':'XMN','银川':'INC','张家界':'DYG','张掖':'YZY','珠海':'ZUH',}
     sh_city = ['上海', 'SHA']
     
     @classmethod
