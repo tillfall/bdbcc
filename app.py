@@ -365,6 +365,27 @@ class FlightCtrip:
         ret += '</table>'
         return Markup(ret)
         
+    @classmethod
+    def getprice_onecity(cls, acity):
+        try:
+            acitycode = cls.city[acity]
+            go_url = cls.url_template%(cls.sh_city[1], acitycode)
+            go_req = urlopen(go_url).read().decode('gbk')
+            go_price = json.loads(go_req)['Prices']
+            
+            back_url = cls.url_template%(acitycode, cls.sh_city[1])
+            back_req = urlopen(back_url).read().decode('gbk')
+            back_price = json.loads(back_req)['Prices']
+            
+            dates = sorted(set(go_price.keys()) | set(back_price.keys()))
+            ret = '<table><tr><td>日期</td><td>去</td><td>回</td></tr>'
+            for adate in dates:
+                ret += '<tr><td>'+adate+'</td><td>'+str(go_price.get(adate))+'</td><td>'+str(back_price.get(adate))+'</td></tr>'
+            ret += '</table>'
+            return Markup(ret)
+        except:
+            return 'NA'
+        
 @app.route('/flights', methods=['GET'])
 def get_flights():
     inputText = request.args.get("input_text", default='')
@@ -375,6 +396,16 @@ def get_flights():
         resText = FlightCtrip.getpricetab(dates[0].strip(),dates[1].strip())
     return render_template('query.html', query_url='/flights', input_text=inputText, res_text=resText, 
         hint='2020-01-03,2020-01-05')
+
+@app.route('/flights_city', methods=['GET'])
+def get_flights_city():
+    inputText = request.args.get("input_text", default='')
+    if '' == inputText:
+        resText = ''
+    else:
+        resText = FlightCtrip.getprice_onecity(inputText)
+    return render_template('query.html', query_url='/flights_city', input_text=inputText, res_text=resText, 
+        hint='北京')
 
 #######################################
 
@@ -387,7 +418,7 @@ def index():
 @app.route('/')
 def home():
     return '<title>HOME</title><style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
-        {'/fund':'基金', '/url':'网址', '/flights':'航班', 'https://tillfall.github.io/map.html':'地图', '/getnotify':'检查同步时间'}\
+        {'/fund':'基金', '/url':'网址', '/flights':'航班-多城市', '/flights_city':'航班-单城市', 'https://tillfall.github.io/map.html':'地图', '/getnotify':'检查同步时间'}\
         .items()]) + '</td></tr></table>'
 
 #########################################
