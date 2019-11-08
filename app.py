@@ -243,6 +243,7 @@ def myurl():
         ['360', 'https://www.360.cn/', '#tech#', '[t@126/t]'],
         ['UC浏览器', 'http://www.uc.cn/', '#pim#', '[sina]'],
 
+        ['兰图绘', 'http://www.ldmap.net', '#travel#', '[t@126/t]'],
         ['12306', 'http://www.12306.cn/mormhweb/', '#travel#', '[t/w/t@126]'],
         ['去哪儿', 'https://www.qunar.com/', '#travel#', '[t/w/1@126]'],
         ['蚂蜂窝', 'http://www.mafengwo.cn/', '#travel#', '[t@126/t]'],
