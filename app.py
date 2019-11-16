@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__ = '20191030'
+__version__ = '20191116'
 
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
@@ -45,6 +45,9 @@ buy_records = {
         '2019-03-22':[1600,1035.65], '2019-05-15':[1800,1189.87], '2019-03-08':[1800,1235.17], 
         '2019-02-28':[2000,1315.46], 
     },
+    '110022': {
+        '2019-09-26':[30000,10269.14], '2019-09-04':[20000,6696.86]
+    }
     }
 
 

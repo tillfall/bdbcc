@@ -345,7 +345,7 @@ def line():
     # )
     return c
 
-@app.route("/")
+@app.route("/line")
 def index():
     return render_template("chart.html")
     
