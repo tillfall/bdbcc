@@ -323,8 +323,9 @@ class IndexHistory:
         url = INDEX_URL % (startdate.replace('-', ''))
         page=urlopen(Request(url)).read().decode('gb2312')
         # 每天一条记录，然后按日期排列，然后转换成float
-        vals = [float(x.split(',')[-1]) for x in sorted(page.split('\r\n')[1:-1])]
-        first_val = vals[-1]
+        vals = sorted(page.split('\r\n')[1:-1])
+        vals = [float(x.split(',')[-1]) for x in vals]
+        first_val = vals[0]
         # 只保留涨幅
         return [round((x-first_val)/first_val*100, 2) for x in vals]
 
