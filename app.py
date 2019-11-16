@@ -49,7 +49,7 @@ buy_records = {
         '2019-09-26':[30000,10269.14], '2019-09-04':[20000,6696.86]
     }
     }
-
+INDEX_URL = 'http://quotes.money.163.com/service/chddata.html?code=0000001&start=%s&fields=TCLOSE'
 
 
 app = Flask(__name__)
@@ -317,6 +317,17 @@ def history_value():
     return render_template('query.html', query_url='/history', input_text=inputText, res_text=resText, 
         hint='<110022,110003;>190602,190823')
 
+class IndexHistory:
+    @staticmethod
+    def get_history(startdate):
+        url = INDEX_URL % (startdate.replace('-', ''))
+        page=urlopen(Request(url)).read().decode('gb2312')
+        # 每天一条记录，然后按日期排列，然后转换成float
+        vals = [float(x.split(',')[-1]) for x in sorted(page.split('\r\n')[1:-1])]
+        first_val = vals[-1]
+        # 只保留涨幅
+        return [round((x-first_val)/first_val*100, 2) for x in vals]
+
 class Buy2LineChart:
     @staticmethod
     def one_fund_line(fund_id, buy_records, first_day=''): # {date: [$, share]}
@@ -362,9 +373,17 @@ def chart():
 def get_bar_chart():
     chart_data = Buy2LineChart.fund_line(buy_records)
     line_data = Line()
+
+    all_date = None
+
     for chart_data_key, chart_data_val in chart_data.items():
         p1, p2, p3, p4, p5 = chart_data_val[0],chart_data_val[1],chart_data_val[2],chart_data_val[3],chart_data_val[4]
         line_data = line_data.add_xaxis(p1).add_yaxis(p2, p3, markline_opts=p4, markpoint_opts=p5)
+        all_date = p1
+
+    index_vals = IndexHistory.get_history(all_date[0])
+    line_data = line_data.add_xaxis(all_date).add_yaxis('上证指数', index_vals)
+
     c = (line_data)
     return c.dump_options_with_quotes()
 
