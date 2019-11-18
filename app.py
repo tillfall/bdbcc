@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__ = '20191118'
+__version__ = '2019-11-18'
 
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
@@ -565,7 +565,7 @@ def index():
 def home():
     return '<title>HOME</title><style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
         {'/fund':'基金', '/url':'网址', '/flights':'航班-多城市', '/flights_city':'航班-单城市', 'https://tillfall.github.io/map.html':'地图', '/getnotify':'检查同步时间'}\
-        .items()]) + '</td></tr></table>'
+        .items()]) + '</td></tr></table><hr>version: ' + __version__
 
 #########################################
 
