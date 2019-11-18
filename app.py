@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__ = '20191116'
+__version__ = '20191118'
 
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
