@@ -22,16 +22,15 @@ formatter = logging.Formatter('%(asctime)s: %(levelname)-8s %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
-conf = json.loads(urlopen('https://tillfall.github.io/conf.json').read().decode('utf-8'))
-
-buy_records = conf['基金']['基金购买记录']
-INDEX_URL = conf['基金']['大盘历史']
+def get_conf():
+    return json.loads(urlopen('https://tillfall.github.io/conf.json').read().decode('utf-8'))
 
 app = Flask(__name__)
 
 ########################################
 
 class RealtimeValue:
+    conf = get_conf()
     url_template = conf['基金']['大盘净值']
     # 上证50,000016,中证500,000905，沪深300,000300，上证综指999999，深证成指399001，中小板399005，创业板399006
     index_ids = 'sh000001,sh000016,sh000905,sz399006,sz399001'
@@ -93,6 +92,7 @@ def realtime_value():
 #######################################
 
 class HistoryValue:
+    conf = get_conf()
     url_template = conf['基金']['基金历史']
     headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
     his_tag = '<fld_unitnetvalue>'
@@ -295,7 +295,7 @@ def history_value():
 class IndexHistory:
     @staticmethod
     def get_history(startdate):
-        url = INDEX_URL % (startdate.replace('-', ''))
+        url = get_conf()['基金']['大盘历史'] % (startdate.replace('-', ''))
         page=urlopen(Request(url)).read().decode('gb2312')
         # 每天一条记录，然后按日期排列，然后转换成float
         vals = sorted(page.split('\r\n')[1:-1])
@@ -347,7 +347,7 @@ def chart():
     
 @app.route("/lineChart")
 def get_bar_chart():
-    chart_data = Buy2LineChart.fund_line(buy_records)
+    chart_data = Buy2LineChart.fund_line(get_conf()['基金']['基金购买记录'])
     line_data = Line()
 
     all_date = None
@@ -479,6 +479,7 @@ def getnotify():
 ##########################################
 
 class FlightCtrip:
+    conf = get_conf()
     url_template = conf['旅游']['携程机票']
     city = conf['旅游']['机场代码']
     sh_city = ['上海', 'SHA']
