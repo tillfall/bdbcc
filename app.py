@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__ = '2019-11-18'
+__version__ = '2019-11-19'
 
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
@@ -300,9 +300,10 @@ class IndexHistory:
         # 每天一条记录，然后按日期排列，然后转换成float
         vals = sorted(page.split('\r\n')[1:-1])
         vals = [float(x.split(',')[-1]) for x in vals]
-        first_val = vals[0]
-        # 只保留涨幅
-        return [round((x-first_val)/first_val*100, 2) for x in vals]
+        # first_val = vals[0]
+        # # 只保留涨幅
+        # return [round((x-first_val)/first_val*100, 2) for x in vals]
+        return vals
 
 class Buy2LineChart:
     @staticmethod
@@ -327,6 +328,7 @@ class Buy2LineChart:
         last_x = max(his_dict.keys())
         last_y = his_dict[last_x]
         p5.append(opts.MarkPointItem(coord=[last_x, last_y], value=buy_remain, symbol=SymbolType.DIAMOND))
+        print(last_x, last_y, buy_remain)
         
         return p1, p2, p3, p4, opts.MarkPointOpts(data=p5)
 
@@ -356,9 +358,16 @@ def get_bar_chart():
         p1, p2, p3, p4, p5 = chart_data_val[0],chart_data_val[1],chart_data_val[2],chart_data_val[3],chart_data_val[4]
         line_data = line_data.add_xaxis(p1).add_yaxis(p2, p3, markline_opts=p4, markpoint_opts=p5)
         all_date = p1
-
+        
+    # 双轴，副轴为上证指数
     index_vals = IndexHistory.get_history(all_date[0])
-    line_data = line_data.add_xaxis(all_date).add_yaxis('上证指数', index_vals)
+    # min_axis, max_axis = min(index_vals), max(index_vals)
+    sh_index = Line().add_xaxis(all_date).add_yaxis('上证指数', [int(x-2900) for x in index_vals], 
+    # markline_opts=[100], 
+        yaxis_index=1)
+        # .extend_axis(yaxis=opts.AxisOpts(min_=[min_axis], max_=[max_axis]))
+    line_data.extend_axis(yaxis=opts.AxisOpts(interval=50)).overlap(sh_index)
+    # see: http://pyecharts.org/#/zh-cn/rectangular_charts
 
     c = (line_data)
     return c.dump_options_with_quotes()
