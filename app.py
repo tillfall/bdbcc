@@ -24,7 +24,10 @@ logging.getLogger('').addHandler(console)
 
 def get_conf():
     logging.debug('get config')
-    return json.loads(urlopen('https://tillfall.github.io/conf.json').read().decode('utf-8'))
+    with open('conf.json', 'r', encoding='utf8') as f:
+        data = f.read()
+
+    return json.loads(data)
 
 app = Flask(__name__)
 
