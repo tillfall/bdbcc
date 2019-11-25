@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__ = '2019-11-19'
+__version__ = '2019-11-25'
 
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
@@ -29,6 +29,14 @@ def get_conf():
 
     return json.loads(data)
 
+def url_open(url):
+    logging.info(url)
+    return urlopen(url)
+
+def req_open(req):
+    logging.info(req.full_url)
+    return urlopen(req)
+
 app = Flask(__name__)
 
 ########################################
@@ -49,7 +57,7 @@ class RealtimeValue:
         try:
             url = cls.url_template % id
             logging.debug(url)
-            resp = urlopen(url).read().decode('gbk')
+            resp = url_open(url).read().decode('gbk')
             # var hq_str_s_sh000001="上证指数,2991.0459,-16.8375,-0.56,1553769,16953193";\n
             begin = resp.index('="') + 2
             end = resp.index('";')
@@ -67,7 +75,7 @@ class RealtimeValue:
     @classmethod
     def get_one_fund(cls, id):
         url = cls.fund_url_template%id
-        req = urlopen(url).read().decode('utf-8')
+        req = url_open(url).read().decode('utf-8')
         reqjson = json.loads(req[8:-2])
         return [reqjson['fundcode'], reqjson['name'], reqjson['gszzl'], reqjson['gztime'][5:]]
 
@@ -155,7 +163,7 @@ class HistoryValue:
     def get_last_and_name(cls, fundid):
         url = cls.url_template_2 % fundid
         logging.debug(url)
-        resp = urlopen(url).read().decode('gbk')
+        resp = url_open(url).read().decode('gbk')
         # var hq_str_f_150065="长盛同瑞B,0.777,1.887,0.781,2019-10-16,0.0183126";
         begin = resp.find('="')+2
         end = resp.find(',',begin)
@@ -171,7 +179,7 @@ class HistoryValue:
         url = self.url_template%(fundid, self.startdate, self.enddate)
         logging.debug(url)
         req = Request(url=url, headers=self.headers) 
-        resp = urlopen(req).read().decode('utf-8')
+        resp = req_open(req).read().decode('utf-8')
         return resp
         
     def get_all_with_today(self, fundid):
@@ -300,7 +308,7 @@ class IndexHistory:
     @staticmethod
     def get_history(startdate):
         url = get_conf()['基金']['大盘历史'] % (startdate.replace('-', ''))
-        page=urlopen(Request(url)).read().decode('gb2312')
+        page=req_open(Request(url)).read().decode('gb2312')
         # 每天一条记录，然后按日期排列，然后转换成float
         vals = sorted(page.split('\r\n')[1:-1])
         vals = [float(x.split(',')[-1]) for x in vals]
@@ -504,7 +512,7 @@ class FlightCtrip:
     def getprice(cls, dcitycode, acitycode, date):
         try:
             url = cls.url_template % (dcitycode, acitycode)
-            req = urlopen(url).read().decode('gbk')
+            req = url_open(url).read().decode('gbk')
             return str(json.loads(req)['Prices'][date])
         except:
             return 'NA'
