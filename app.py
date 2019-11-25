@@ -23,6 +23,7 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
 def get_conf():
+    logging.debug('get config')
     return json.loads(urlopen('https://tillfall.github.io/conf.json').read().decode('utf-8'))
 
 app = Flask(__name__)
@@ -63,7 +64,6 @@ class RealtimeValue:
     @classmethod
     def get_one_fund(cls, id):
         url = cls.fund_url_template%id
-        logging.info(url)
         req = urlopen(url).read().decode('utf-8')
         reqjson = json.loads(req[8:-2])
         return [reqjson['fundcode'], reqjson['name'], reqjson['gszzl'], reqjson['gztime'][5:]]
@@ -266,7 +266,7 @@ class HistoryValue:
             # 总份额
             total_share += buy_info[1]
             # 折线图上的点
-            buy_point[buy_date] = history_dict[buy_date]
+            buy_point[buy_date] = history_dict.get(buy_date)
             # 折线图上的值
             buy_val[buy_date] = buy_info[0]
 
@@ -442,6 +442,7 @@ def myurl():
         ['jsform', 'https://www.bangboss.com/', '#pim#', '[t@126/Wg]'],
         ['pinbox', 'https://withpinbox.com/items', '#pim#', '[t@126/t]'],
         ['好网角', 'https://www.wang1314.com/', '#pim#', '[sina]'],
+        ['gitee', 'https://gitee.com', '#tech#', '[t/Wg]'],
         ['github', 'https://github.com/', '#tech#', '[t/wengu]'],
         ['LeetCode', 'https://leetcode-cn.com/', '#tech#', '[t/t/t@126]'],
         ['微软软件', 'http://msdn.itellyou.cn/', '#tech#', ''],
