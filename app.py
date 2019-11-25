@@ -63,6 +63,7 @@ class RealtimeValue:
     @classmethod
     def get_one_fund(cls, id):
         url = cls.fund_url_template%id
+        logging.info(url)
         req = urlopen(url).read().decode('utf-8')
         reqjson = json.loads(req[8:-2])
         return [reqjson['fundcode'], reqjson['name'], reqjson['gszzl'], reqjson['gztime'][5:]]
@@ -328,7 +329,6 @@ class Buy2LineChart:
         last_x = max(his_dict.keys())
         last_y = his_dict[last_x]
         p5.append(opts.MarkPointItem(coord=[last_x, last_y], value=buy_remain, symbol=SymbolType.DIAMOND))
-        print(last_x, last_y, buy_remain)
         
         return p1, p2, p3, p4, opts.MarkPointOpts(data=p5)
 
@@ -354,7 +354,7 @@ def get_bar_chart():
 
     all_date = None
 
-    for chart_data_key, chart_data_val in chart_data.items():
+    for _, chart_data_val in chart_data.items():
         p1, p2, p3, p4, p5 = chart_data_val[0],chart_data_val[1],chart_data_val[2],chart_data_val[3],chart_data_val[4]
         line_data = line_data.add_xaxis(p1).add_yaxis(p2, p3, markline_opts=p4, markpoint_opts=p5)
         all_date = p1
@@ -362,8 +362,11 @@ def get_bar_chart():
     # 双轴，副轴为上证指数
     index_vals = IndexHistory.get_history(all_date[0])
     # min_axis, max_axis = min(index_vals), max(index_vals)
+    # last_x, last_y, last_val = all_date[-1], int(index_vals[-1]-2900), index_vals[-1]
+    # print(last_x, last_y, last_val)
     sh_index = Line().add_xaxis(all_date).add_yaxis('上证指数', [int(x-2900) for x in index_vals], 
     # markline_opts=[100], 
+        # markpoint_opts=[opts.MarkPointItem(coord=[last_x, last_y], value=last_val, symbol=SymbolType.RECT)],
         yaxis_index=1)
         # .extend_axis(yaxis=opts.AxisOpts(min_=[min_axis], max_=[max_axis]))
     line_data.extend_axis(yaxis=opts.AxisOpts(interval=50)).overlap(sh_index)
