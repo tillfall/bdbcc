@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__ = '2019-11-25'
+__version__ = '2019-11-26'
 
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
@@ -9,6 +9,7 @@ import time
 from pyecharts.charts import Line
 import pyecharts.options as opts
 from pyecharts.globals import SymbolType
+import commands
 
 import logging
 logging.basicConfig(level=logging.DEBUG,
@@ -502,6 +503,13 @@ def getnotify():
 
 ##########################################
 
+@app.route('/log')
+def get_log():
+    (status, output) = commands.getstatusoutput('tail -n 100 nohup.out')
+    return output
+
+##########################################
+
 class FlightCtrip:
     conf = get_conf()
     url_template = conf['旅游']['携程机票']
@@ -589,7 +597,8 @@ def index():
 @app.route('/')
 def home():
     return '<title>HOME</title><style>td {font-size: 4vw;}</style><table><tr><td>' + '</td></tr><tr><td>'.join(['<a href="%s">%s</a>'%(k,v) for k, v in \
-        {'/fund':'基金', '/url':'网址', '/flights':'航班-多城市', '/flights_city':'航班-单城市', 'https://tillfall.github.io/map.html':'地图', '/getnotify':'检查同步时间'}\
+        {'/fund':'基金', '/url':'网址', '/flights':'航班-多城市', '/flights_city':'航班-单城市', 'https://tillfall.github.io/map.html':'地图', 
+        '/getnotify':'检查同步时间', '/log':'运行日志'}\
         .items()]) + '</td></tr></table><hr>version: ' + __version__
 
 #########################################
