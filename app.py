@@ -9,7 +9,8 @@ import time
 from pyecharts.charts import Line
 import pyecharts.options as opts
 from pyecharts.globals import SymbolType
-import commands
+from subprocess import getoutput
+
 
 import logging
 logging.basicConfig(level=logging.DEBUG,
@@ -505,7 +506,7 @@ def getnotify():
 
 @app.route('/log')
 def get_log():
-    (status, output) = commands.getstatusoutput('tail -n 100 nohup.out')
+    output = getoutput('tail -n 100 nohup.out')
     return output
 
 ##########################################
