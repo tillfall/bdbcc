@@ -506,7 +506,7 @@ def getnotify():
 
 @app.route('/log')
 def get_log():
-    output = getoutput('tail -n 100 nohup.out')
+    output = getoutput('tail -n 100 nohup.out').replace('\n','<br/>')
     return output
 
 ##########################################
