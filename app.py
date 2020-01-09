@@ -73,7 +73,7 @@ class RealtimeValue:
             return [id[-6:]] + ['ERR']*4
                 
     fund_url_template = conf['基金']['基金实时']
-    fund_index_ids = '110022,110003,003318'
+    fund_index_ids = conf['基金']['关注基金']
     @classmethod
     def get_one_fund(cls, id):
         url = cls.fund_url_template%id
