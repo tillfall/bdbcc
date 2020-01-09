@@ -47,7 +47,7 @@ class RealtimeValue:
     conf = get_conf()
     url_template = conf['基金']['大盘净值']
     # 上证50,000016,中证500,000905，沪深300,000300，上证综指999999，深证成指399001，中小板399005，创业板399006
-    index_ids = 'sh000001,sh000016,sh000905,sz399006,sz399001'
+    index_ids = 'sh000001,sz399001,sh000016,sh000905,sz399006'
     chart_tmplate = '''<tr><td>
     <img src="%s"></img>
     <img src="%s"></img>
