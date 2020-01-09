@@ -5,6 +5,7 @@
    "基金实时曲线":"http://image.sinajs.cn/newchart/min/n/%s.gif",
    "基金历史":"http://data.funds.hexun.com/outxml/detail/openfundnetvalue.aspx?fundcode=%s&startdate=%s&enddate=%s",
    "基金净值":"http://hq.sinajs.cn/list=f_%s",
+   "关注基金":"110022,110003,003318,001410",
    "基金购买记录":{
     "003318": {
         "2019-08-30":[45000,48955.51], "2019-09-06":[20000,20856.15], "2019-09-09":[50000,51357.53],

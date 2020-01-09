@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__ = '2019-11-26'
+__version__ = '2020-01-10'
 
 from flask import Flask, request, render_template, Markup
 from urllib.request import urlopen, Request
@@ -114,7 +114,7 @@ class HistoryValue:
     
     url_template_2 = conf['基金']['基金净值']
     
-    my_funds = '110022,110003,003318'.split(',')
+    my_funds = conf['基金']['关注基金'].split(',')
     inputdatefmt = '%y%m%d'
     urldatefmt = '%Y-%m-%d'
     
@@ -440,6 +440,7 @@ def myurl():
         ['建行', 'http://www.ccb.com/cn/home/indexv3.html', '#money#', '[t/z2]'],
         ['农行', 'http://www.abchina.com/cn/', '#money#', '[139/M.1]'],
         ['中国银行', 'http://www.boc.cn/', '#money#', '[t/m.1]'],
+        ['华夏保险', 'http://www.ihxlife.com/myorder.html', '#money#', '[139/w.n]'],
         
         ['猎聘网', 'https://www.liepin.com/', '#job#', '[t@126/t]'],
         ['LinkedIn', 'https://www.linkedin.com/feed/', '#job#', '[1@126/139]'],
