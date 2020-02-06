@@ -457,7 +457,7 @@ def myurl():
         ['pinbox', 'https://withpinbox.com/items', '#pim#', '[t@126/t]'],
         ['好网角', 'https://www.wang1314.com/', '#pim#', '[sina]'],
         ['gitee', 'https://gitee.com', '#tech#', '[t/Wg]'],
-        ['github', 'https://github.com/', '#tech#', '[t/wengu]'],
+        ['github', 'https://github.com/', '#tech#', '[t/Wg.g]'],
         ['LeetCode', 'https://leetcode-cn.com/', '#tech#', '[t/t/t@126]'],
         ['微软软件', 'http://msdn.itellyou.cn/', '#tech#', ''],
         ['高德地图API', 'http://lbs.amap.com/console/show/picker', '#travel#', '[t/t]'],
